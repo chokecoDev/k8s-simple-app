@@ -22,12 +22,11 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const projectUrl = 'https://api.github.com/repos/${{ github.repository }}/projects';
-            const response = await github.request('POST ' + projectUrl, {
-              name: 'New Project',
-              body: 'This is a new project created by GitHub Actions',
-              headers: {
-                accept: 'application/vnd.github.inertia-preview+json'
-              }
+            const issue = await github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'New Issue from GitHub Actions',
+              body: 'This issue was automatically created by a GitHub Action.',
+              labels: ['bug']
             });
-            console.log(response.data);
+            console.log(`Created issue: ${issue.data.html_url}`);
