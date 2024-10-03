@@ -18,15 +18,9 @@ jobs:
   manage-project:
     runs-on: ubuntu-latest
     steps:
-      - name: Create a new project card
-        uses: actions/github-script@v4
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v3
         with:
-          script: |
-            const issue = await github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'New Issue from GitHub Actions',
-              body: 'This issue was automatically created by a GitHub Action.',
-              labels: ['bug']
-            });
-            console.log(`Created issue: ${issue.data.html_url}`);
+          project-name: projectABD
+          column-name: Backlog
+          issue-number: 1
