@@ -1,0 +1,25 @@
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  packages: read
+  deployments: write
+  repository-projects: write
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - '**'
+
+name: Production
+jobs:
+  manage-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v3
+        with:
+          project-name: projectABD
+          column-name: Backlog
+          issue-number: 1
