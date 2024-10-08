@@ -1,0 +1,31 @@
+name: Commit Changes
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  commit_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: main  # Cambia "main" por el nombre de tu rama principal si es diferente
+
+      - name: Make Changes
+        run: |
+          echo "Changes made on $(date)" >> changes.txt
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add changes.txt
+          git commit -m "asdasdadsasd"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
