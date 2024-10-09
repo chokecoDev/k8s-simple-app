@@ -14,3 +14,10 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
+      - name: Group lines in log
+        run: |
+          echo "::group::Extended info"
+          echo "Info line 1"
+          echo "Info line 2"
+          echo "Info line 3"
+          echo "::endgroup::"
