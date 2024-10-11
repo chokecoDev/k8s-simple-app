@@ -1,31 +1,24 @@
-name: Commit Changes
+name: Caching Primes
 
-on:
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: write
+on: push
 
 jobs:
-  commit_changes:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          ref: main  # Cambia "main" por el nombre de tu rama principal si es diferente
+    - uses: actions/checkout@v4
 
-      - name: Make Changes
-        run: |
-          echo "Changes made on $(date)" >> changes.txt
+    - name: Cache Primes
+      id: cache-primes
+      uses: actions/cache@v4
+      with:
+        path: prime-numbers
+        key: ${{ runner.os }}-primes
 
-      - name: Commit and Push Changes
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add changes.txt
-          git commit -m "asdasd"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate Prime Numbers
+      if: steps.cache-primes.outputs.cache-hit != 'true'
+      run: /generate-primes.sh -d prime-numbers
+
+    - name: Use Prime Numbers
+      run: /primes.sh -d prime-numbers
